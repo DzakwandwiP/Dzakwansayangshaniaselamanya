@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>to my valentines!<3</title>
+    <link rel="icon" href="https://i.ibb.co.com/hXZsYxZ/heart.png">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-image: url('foto/background.gif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            position: relative;
+            transition: all 1s ease-in-out;
+        }
+
+#popup,
+#questionPage,
+#galleryPage {
+    display: none;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+}
+
+        #popup.active,
+        #questionPage.active,
+        #galleryPage.active,
+        #alertPage.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff99cc;
+            color: white;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: #ff66a3;
+        }
+
+        #yesBtn {
+            background-color: #ff66a3;
+            border: 2px solid #ff66a3;
+        }
+
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px;
+            scroll-behavior: smooth;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            animation: autoScroll 30s linear infinite;
+            background-position: center;
+        }
+
+        .gallery img {
+            max-height: 280px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes autoScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .background-decor {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .flower,
+        .butterfly {
+            position: absolute;
+            animation: floatUp 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        .butterfly {
+            animation: floatFly 15s ease-in-out infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+            }
+        }
+
+        @keyframes floatFly {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate(50px, -200px) rotate(30deg);
+            }
+            100% {
+                transform: translate(-20px, -400px) rotate(-15deg);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+            width: 100%;
+        }
+
+        #questionText {
+            transition: opacity 0.3s ease;
+        }
+
+        .lover-btn {
+            margin: 18px 0 10px;
+            padding: 12px 26px;
+            background: linear-gradient(135deg, #ff9acb, #ff6fae);
+            color: white;
+            text-decoration: none;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 8px 18px rgba(255, 102, 163, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .lover-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 26px rgba(255, 102, 163, 0.6);
+        }
+
+        .simple-alert {
+            color: #ff3385;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+            animation: fadeInOut 2s ease;
+            position: absolute;
+            bottom: 100%;        
+            margin-bottom: 12px; 
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .gif-expression {
+            position: absolute;
+            bottom: 155%; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            z-index: 100;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: translateX(-50%) scale(0.5);
+                opacity: 0;
+            }
+            70% {
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+
+#alertPage {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#alertPage.active {
+    display: flex;
+}
+
+.alert-content {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+
+#alertTapBtn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 12px;
+  background-color: #f48fb1;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#alertPage.active {
+    display: flex;
+}
+
+.alert-content {
+    background: transparent;
+    padding: 0;
+}
+
+   
+        .alert-content img {
+            width: 300px;
+            height: auto;
+            margin-bottom: 30px;
+            
+      
+            mix-blend-mode: multiply;
+            
+    
+            filter: 
+                brightness(1.1) 
+                contrast(1.1)
+                drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            
+
+            backdrop-filter: contrast(0.9);
+            
+   
+            -webkit-mask-image: linear-gradient(to bottom, 
+                rgba(0,0,0,1) 0%, 
+                rgba(0,0,0,1) 100%);
+            mask-image: linear-gradient(to bottom, 
+                rgba(0,0,0,1) 0%, 
+                rgba(0,0,0,1) 100%);
+            
+   
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+   
+        .alert-content img.light-mode {
+            mix-blend-mode: screen;
+            filter: 
+                brightness(1.2)
+                contrast(0.9)
+                saturate(1.1);
+        }
+
+     
+        .alert-content img.color-burn {
+            mix-blend-mode: color-burn;
+            filter: brightness(1.15) contrast(0.95);
+        }
+
+
+        .alert-content img.fallback {
+            filter: 
+                drop-shadow(0 0 1px rgba(0,0,0,0.3))
+                drop-shadow(0 0 2px rgba(0,0,0,0.2));
+        }
+
+        #alertTapBtn {
+            padding: 15px 25px;
+            font-size: 16px;
+            background-color: #ee8696;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(238, 134, 150, 0.4);
+        }
+
+        #alertTapBtn:hover {
+            background-color: #ff9faf;
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(238, 134, 150, 0.6);
+        }
+
+        /* Media Query untuk Mobile */
+        @media (max-width: 768px) {
+            .gallery {
+                animation: autoScroll 25s linear infinite;
+                gap: 10px;
+            }
+            
+            .gallery img {
+                max-height: 220px;
+            }
+            
+            .alert-content img {
+                width: 240px;
+                margin-bottom: 25px;
+            }
+            
+            #alertTapBtn {
+                padding: 14px 22px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                animation: autoScroll 20s linear infinite;
+                gap: 8px;
+            }
+            
+            .gallery img {
+                max-height: 180px;
+            }
+            
+            .alert-content img {
+                width: 200px;
+                margin-bottom: 20px;
+            }
+            
+            #alertTapBtn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+   
+        #waBtn {
+            position: fixed;
+            bottom: 30px;
+            padding: 14px 22px;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            white-space: nowrap;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        #waBtn.show {
+            display: flex;
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #waBtn:hover {
+            transform: translateX(-50%) scale(1.05);
+            background-color: #1da851;
+        }
+
+        .notification {
+            position: absolute;
+            width: 240px;
+            height: 160px;
+            background-color: #FFB6C1;
+            color: black;
+            font-size: 16px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 100;
+            border: 4px solid white;
+            animation: fadeIn 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .notification-header {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: white;
+            border-radius: 6px 6px 0 0;
+            box-sizing: border-box;
+        }
+
+        .notification-header .title {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 13px;
+            color: black;
+        }
+
+        .minimize-btn {
+            position: absolute;
+            right: 6px;
+            top: 3px;
+            width: 26px;
+            height: 22px;
+            font-size: 18px;
+            line-height: 18px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: black;
+            border-radius: 4px;
+        }
+
+        .minimize-btn:hover {
+            background-color: #f2f2f2;
+        }
+
+        .notification p {
+            margin: 0;
+            text-align: center;
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #alertPage.disable-click {
+    pointer-events: none;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="background-decor">
+        <img src="1.png" class="flower" style="left: 10%; animation-delay: 0s; width: 40px;">
+        <img src="1.png" class="flower" style="left: 70%; animation-delay: 3s; width: 50px;">
+        <img src="2.png" class="butterfly" style="left: 30%; top: 80%; width: 60px; animation-delay: 1s;">
+        <img src="2.png" class="butterfly" style="left: 80%; top: 90%; width: 40px; animation-delay: 5s;">
+    </div>
+
+    <div class="container">
+        <div id="popup" class="active">
+            <h2 id="popupText">happy valentine's day to my favorite girl.<br>i choose you, again and again. 💘</h2>
+            <button onclick="nextPopup()">tap!</button>
+        </div>
+
+        <div id="questionPage">
+            <h2 id="questionText">
+                <b>wanna see the prettiest girl who stole my heart</b><br>
+                <b>just with her eyes?</b>
+            </h2>
+            <div class="buttons-container">
+                <button id="yesBtn" onclick="goToGallery()">maauu</button>
+                <button id="noBtn" onclick="handleNoClick()">tidaakk</button>
+            </div>
+        </div>
+
+        <div id="galleryPage">
+            <h2><b>the prettiest girl <br>i've ever met 💗💞</b></h2>
+            <button class="lover-btn" onclick="goToAlertPage()">To my beloved, my girl, my home, my heart, my safest place, and my everything 💌</button>
+            <div class="gallery">
+                <img src="foto/1.jpg" alt="Foto kamu">
+                <img src="foto/2.jpg" alt="Foto kamu">
+                <img src="foto/3.jpg" alt="Foto kamu">
+                <img src="foto/4.jpg" alt="Foto kamu">
+                <img src="foto/5.jpg" alt="Foto kamu">
+                <img src="foto/6.jpg" alt="Foto kamu">
+                <img src="foto/7.jpg" alt="Foto kamu">
+                <img src="foto/8.jpg" alt="Foto kamu">
+                <img src="foto/9.jpg" alt="Foto kamu">
+                <img src="foto/10.jpg" alt="Foto kamu">
+                <img src="foto/1.jpg" alt="Foto kamu">
+                <img src="foto/2.jpg" alt="Foto kamu">
+                <img src="foto/3.jpg" alt="Foto kamu">
+            </div>
+        </div>
+    </div>
+<div id="alertPage">
+  <div class="alert-content">
+    <img src="gifs/last.gif" alt="ily">
+    <button id="alertTapBtn" onclick="handleAlertTap()">tap this!</button>
+  </div>
+</div>
+
+    <a id="waBtn" href="https://wa.me/6282112256650" target="_blank">
+        chat me on whatsapp 💌
+    </a>
+
+    <audio id="mainAudio" autoplay muted loop>
+        <source src="lagu.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <audio id="alertAudio" preload="auto">
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const mainAudio = document.getElementById('mainAudio');
+        const alertAudio = document.getElementById('alertAudio');
+        
+        document.addEventListener('click', function() {
+            if (mainAudio.muted) {
+                mainAudio.muted = false;
+                mainAudio.play();
+            }
+        });
+
+        const messages = [
+            "hiii sayangg, today is valentine's dayyy!!",
+            "i'm here to let you know that i am very grateful for all the things that you did to me",
+            "i hope you know how much i love the way you care about me, listening to all my rants, supporting me, congratulating me and loving me",
+            "i appreciate you for treating me right",
+            "don't ever think about me leaving you bcs that's not who i am, even if the world is againts you, i would still choose to be at your side",
+            "i love you endlessly,completely, and with every place of who i am. lovvvve youuu so muchhh sayangg! 💖"
+        ];
+
+        const noButtonMessages = [
+            "sayang..",
+            "ayo dong cantik?",
+            "ngambek.",
+            "plisss tap yes akh",
+            "sengaja ya?",
+        ];
+
+        const gifExpressions = [
+            "gifs/1.gif",
+            "gifs/2.gif",
+            "gifs/3.gif",
+            "gifs/4.gif",
+            "gifs/5.gif",
+        ];
+
+        let i = 0;
+        let noClickCount = 0;
+        let yesButtonSize = 1;
+
+        function nextPopup() {
+            i++;
+            if (i < messages.length) {
+                document.getElementById("popupText").innerText = messages[i];
+            } else {
+                document.getElementById("popup").classList.remove("active");
+                document.getElementById("questionPage").classList.add("active");
+            }
+        }
+
+        function goToGallery() {
+            const container = document.querySelector('.buttons-container');
+            
+            const gif = document.createElement('img');
+            gif.className = 'gif-expression';
+            gif.src = "gifs/happy.gif";
+            gif.alt = "Happy GIF";
+            container.appendChild(gif);
+            
+            const alert = document.createElement('div');
+            alert.className = 'simple-alert';
+            alert.textContent = "yayyy!";
+            alert.style.color = '#ff66a3';
+            alert.style.fontSize = '16px';
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                document.getElementById("questionPage").classList.remove("active");
+                document.getElementById("galleryPage").classList.add("active");
+                
+                startGalleryAutoSlide();
+            }, 1500);
+        }
+
+        function goToAlertPage() {
+            document.getElementById("galleryPage").classList.remove("active");
+            document.querySelector(".container").style.visibility = "hidden";
+            document.getElementById("alertPage").classList.add("active");
+            
+    
+            const bubuGif = document.getElementById('bubuGif');
+            if (bubuGif) {
+
+                const modes = ['multiply', 'screen', 'color-burn', ''];
+                let currentMode = 0;
+                
+ 
+                const tryMode = () => {
+                    bubuGif.className = ''; 
+                    
+                    switch(currentMode) {
+                        case 0:
+                            bubuGif.classList.add('light-mode');
+                            break;
+                        case 1:
+                            bubuGif.classList.add('color-burn');
+                            break;
+                        case 2:
+                            bubuGif.classList.add('fallback');
+                            break;
+                        default:
+                         
+                            break;
+                    }
+                    
+                    currentMode = (currentMode + 1) % modes.length;
+                };
+                
+               
+                setTimeout(tryMode, 100);
+            }
+        }
+
+        function handleNoClick() {
+            if (noClickCount >= 5) return;
+
+            const questionText = document.getElementById('questionText');
+            if (questionText) questionText.style.opacity = '0';
+
+            const messageIndex = Math.min(noClickCount, noButtonMessages.length - 1);
+            const gifIndex = Math.min(noClickCount, gifExpressions.length - 1);
+            showSimpleAlert(noButtonMessages[messageIndex], gifIndex);
+
+            yesButtonSize += 0.15;
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtn.style.transform = `scale(${yesButtonSize})`;
+            yesBtn.style.border = '2px solid #ff66a3';
+            yesBtn.style.animation = 'pulse 0.5s ease';
+
+            setTimeout(() => {
+                yesBtn.style.animation = '';
+                if (questionText) questionText.style.opacity = '1';
+            }, 2000);
+
+            noClickCount++;
+
+            if (noClickCount >= 3) {
+                yesBtn.innerHTML = "maauu!";
+                yesBtn.style.fontWeight = '600';
+            }
+            if (noClickCount >= 5) {
+                yesBtn.style.boxShadow = '0 0 15px rgba(255, 51, 133, 0.7)';
+            }
+        }
+
+        function showSimpleAlert(message, gifIndex) {
+            const questionText = document.getElementById('questionText');
+            if (questionText) questionText.style.opacity = '0';
+
+            const existingAlert = document.querySelector('.simple-alert');
+            const existingGif = document.querySelector('.gif-expression');
+            if (existingAlert) existingAlert.remove();
+            if (existingGif) existingGif.remove();
+            
+            const gif = document.createElement('img');
+            gif.className = 'gif-expression';
+            gif.src = gifExpressions[gifIndex];
+            gif.alt = "Expression GIF";
+            document.querySelector('.buttons-container').appendChild(gif);
+            
+            const alert = document.createElement('div');
+            alert.className = 'simple-alert';
+            alert.textContent = message;
+            document.querySelector('.buttons-container').appendChild(alert);
+            
+            setTimeout(() => {
+                if (gif.parentNode) gif.remove();
+                if (alert.parentNode) alert.remove();
+                if (questionText) questionText.style.opacity = '1';
+            }, 2000);
+        }
+
+function handleAlertTap() {
+    const btn = document.getElementById("alertTapBtn");
+    btn.style.opacity = "0";
+    btn.style.pointerEvents = "none";
+
+    setTimeout(() => {
+        btn.style.display = "none";
+    }, 300);
+
+    const waBtn = document.getElementById("waBtn");
+    setTimeout(() => {
+        waBtn.classList.add("show");
+    }, 300);
+
+    alertAudio.play();
+
+    document.getElementById("alertPage").classList.add("disable-click");
+
+    generateRandomNotifications();
+}
+
+        function generateRandomNotifications() {
+            const notificationCount = 100;
+            const message = "Puffy, my Valentine. You're perfect just the way you are, and I want you with me for a long time. 💗";
+
+            for (let i = 0; i < notificationCount; i++) {
+                setTimeout(() => {
+                    const notification = document.createElement("div");
+                    notification.className = "notification";
+
+                    notification.innerHTML = `
+                        <div class="notification-header">
+                            <span class="title">alert ..!</span>
+                            <button class="minimize-btn" onclick="minimizeNotification(this)">–</button>
+                        </div>
+                        <p>${message}</p>
+                    `;
+
+                    const x = Math.random() * (window.innerWidth - 240);
+                    const y = Math.random() * (window.innerHeight - 160);
+                    notification.style.left = x + "px";
+                    notification.style.top = y + "px";
+
+                    document.body.appendChild(notification);
+                }, i * 200);
+            }
+        }
+
+        function minimizeNotification(button) {
+            const notification = button.closest(".notification");
+            notification.style.display = "none";
+        }
+
+        function startGalleryAutoSlide() {
+            const gallery = document.querySelector(".gallery");
+            let currentIndex = 0;
+            const images = gallery.querySelectorAll("img");
+            const totalImages = images.length;
+            
+            if (window.galleryInterval) {
+                clearInterval(window.galleryInterval);
+            }
+            
+            window.galleryInterval = setInterval(() => {
+                currentIndex++;
+                if (currentIndex >= totalImages) {
+                    currentIndex = 0;
+                }
+                gallery.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }, 2500);
+        }
+
+        setTimeout(() => {
+            if (document.getElementById("galleryPage").classList.contains("active")) {
+                startGalleryAutoSlide();
+            }
+        }, 100);
+    </script>
+</body>
+</html>
